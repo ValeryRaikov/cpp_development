@@ -44,7 +44,7 @@ public:
             customStack.pop();
         }
         cout << endl;
-        }
+    }
 };
 
 int main() {
