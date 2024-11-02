@@ -1,0 +1,13 @@
+1234567890
+John Doe
+Headache
+10/10/2023
+2
+Headache
+Migraine
+Dizziness
+Vertigo
+2
+Paracetamol
+Ibuprofen
+----
