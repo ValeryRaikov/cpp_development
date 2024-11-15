@@ -26,6 +26,9 @@ public:
         }
     }
 
+    string getName() { return name; }
+    void setName(string value) { if (!value.empty()) { name = value; } }
+
     static School createSchool() {
         string name;
 
