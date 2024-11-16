@@ -3,6 +3,7 @@
 using namespace std;
 
 class Owner;
+class Insurance;
 
 class Vehicle {
 protected:
@@ -30,4 +31,5 @@ public:
     virtual void displayVehicleInfo() = 0;
 
     friend class Owner;
+    friend class Insurance;
 };

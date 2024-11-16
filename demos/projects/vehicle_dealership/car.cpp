@@ -70,6 +70,7 @@ public:
         }
 
         issues.erase(it);
+        price += issue.price;
         cout << "Issue removed successfully.\n";
     }
 

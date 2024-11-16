@@ -42,6 +42,7 @@ public:
 
         if (it == vehicles.end()) {
             cout << "Vehicle not in the owner vehicles' list.\n";
+            return;
         }
 
         vehicles.erase(it);
