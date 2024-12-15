@@ -367,3 +367,304 @@ int main() {
 
 	return 0;
 }
+
+// 06
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+class Engine {
+private:
+	string vinNumber;
+	string fuelType;
+	int numberOfCylinders;
+	int horsePower;
+public:
+	Engine() = default;
+
+	Engine(string vinNumber, string fuelType, int numberOfCylinders, int horsePower) {
+		this->vinNumber = vinNumber;
+		this->fuelType = fuelType;
+		this->numberOfCylinders = numberOfCylinders;
+		this->horsePower = horsePower;
+	}
+
+	string getVinNumber() const { return vinNumber; }
+	string getFuelType() const { return fuelType; }
+	int getNumberOfCylinders() const { return numberOfCylinders; }
+	int getHorsePower() const { return horsePower; }
+};
+
+class Vehicle {
+protected:
+	string brand;
+	string model;
+	int year;
+	Engine engine;
+public:
+	Vehicle(string brand, string model, int year, Engine engine) {
+		this->brand = brand;
+		this->model = model;
+		this->year = year;
+		this->engine = engine;
+	}
+
+	string getBrand() const { return brand; }
+	string getModel() const { return model; }
+	int getYear() const { return year; }
+	Engine getEngine() const { return engine; }
+
+
+	virtual void displayInfo() const = 0;
+};
+
+class Car : public Vehicle {
+protected:
+	int price;
+	bool forSale;
+public:
+	Car(string brand, string model, int year, Engine engine, int price, bool forSale)
+		: Vehicle(brand, model, year, engine) {
+		this->price = price;
+		this->forSale = forSale;
+	}
+
+	int getPrice() const { return price; }
+	bool getForSale() const { return forSale; }
+
+	void putOnSale() {
+		cout << "Car is now on sale.\n";
+		forSale = true;
+	}
+
+	void removeFromSale() {
+		cout << "Car is removed from sale market.\n";
+		forSale = false;
+	}
+
+	void displayInfo() const override {
+		cout << "Car: " << getBrand() << ' ' << getModel() << endl;
+		cout << "Year: " << getYear() << endl;
+		cout << "Engine:\n";
+		cout << "	VIN number: " << engine.getVinNumber() << endl;
+		cout << "	Fuel type: " << engine.getFuelType() << endl;
+		cout << "	Horse power: " << engine.getHorsePower() << endl;
+		cout << "Price: " << getPrice() << endl;
+		string text = getForSale() ? "Car is for sale.\n" : "Car is not for sale yet.\n";
+		cout << text << endl;
+	}
+};
+
+int main() {	
+	vector<Car> cars = {};
+
+	cars.push_back(Car("Skoda", "Octavia", 2015, Engine("1234abc", "diesel", 4, 150), 15000, false));
+	cars.push_back(Car("BMW", "E60", 2008, Engine("4567abc", "diesel", 6, 240), 11000, true));
+	cars.push_back(Car("Mazda", "CX3", 2018, Engine("4321bca", "petrol", 4, 130), 18000, true));
+	cars.push_back(Car("Audi", "A6", 2016, Engine("4321def", "petrol", 6, 320), 28000, false));
+	cars.push_back(Car("Ford", "Mondeo", 2020, Engine("4365aac", "diesel", 4, 170), 22000, true));
+
+	for (const auto& car : cars) {
+		if (car.getForSale()) {
+			car.displayInfo();
+		}
+	}
+
+	return 0;
+}
+
+// 07
+#include <iostream>
+
+using namespace std;
+
+class Vehicle {
+protected:
+	string regnNum;
+	string model;
+	int year;
+public:
+	// default constructor
+	Vehicle() = default;
+
+	// parametrized constructor using listing
+	Vehicle(string rn, string m, int y) : regnNum(rn), model(m), year(y) {};
+
+	// dynamic constructor
+	// Vehicle() {
+	// 	  cout << "Enter reg number: ";
+	// 	  cin >> regnNum;
+	// 	  cout << "Enter model: ";
+	// 	  cin >> model;
+	// 	  cout << "Enter year: ";
+	// 	  cin >> year;
+	// }
+
+	// copy constructor
+	Vehicle(const Vehicle& other) : regnNum(other.regnNum), model(other.model), year(other.year) {};
+
+	int getYear() const { return year; }
+
+	void checkIsOlderThan10Years() const {
+		if (2024 - year > 10) 
+			cout << "Vehicle is older than 10years.\n";
+		else
+			cout << "Vehicle is younger than 10years.\n";
+	}
+
+	void displayInfo() const {
+		cout << "Vehicle info:\n";
+		cout << regnNum << ", " << model << ", " << year << endl;
+	}
+};
+
+class Car : public Vehicle {
+protected:
+	string fuelType;
+	double fuelConsumption;
+public:
+	Car(string rn, string m, int y, string ft, double fc) : Vehicle(rn, m, y), fuelType(ft), fuelConsumption(fc) {};
+
+	double checkFuelConsumption(int distance) const {
+		return fuelConsumption * distance / 100;
+	}
+
+	void displayInfo() const {
+		cout << "Car info:\n";
+		cout << regnNum << ", " << model << ", " << year << ", " << fuelType << ", " << fuelConsumption << endl;
+	}
+};
+
+class Truck : public Vehicle {
+protected:
+	int capacity;
+	int currentCapacity;
+public:
+	Truck(string rn, string m, int y, int c, int cc) : Vehicle(rn, m, y), capacity(c), currentCapacity(cc) {};
+
+	bool isOverweightCapacity() const {
+		return currentCapacity > capacity;
+	}
+
+	void displayInfo() const {
+		cout << "Truck info:\n";
+		cout << regnNum << ", " << model << ", " << year << ", " << capacity << ", " << currentCapacity << endl;
+		string text = isOverweightCapacity() ? "Overweight capacity.\n" : "Not overweight capacity.\n";
+		cout << text;
+	}
+};
+
+int main() {
+	Car cars[3] = {
+		Car("CB1706AC", "Octavia", 2015, "diesel", 6.2),
+		Car("CB1234MT", "Superb", 2018, "diesel", 6.9),
+		Car("CB4190PC", "Kodiaq", 2022, "petrol", 8.6),
+	};
+
+	Truck trucks[4] = {
+		Truck("CA4533CX", "MAN", 2012, 10, 4),
+		Truck("CB7751XA", "Volvo", 2017, 14, 8),
+		Truck("CB4077TB", "Mercedes", 2019, 11, 12),
+		Truck("CB0865", "Iveico", 2020, 3, 1),
+	};
+
+	Car* oldestCar = nullptr;
+	int year = INT16_MAX;
+	for (const auto& c : cars) {
+		c.displayInfo();
+
+		if (c.getYear() < year) {
+			year = c.getYear();
+			oldestCar = const_cast<Car*>(&c);
+		}
+	}
+
+	cout << "Oldest car:\n";
+	oldestCar->displayInfo();
+
+	for (const auto& t : trucks) {
+		t.displayInfo();
+	}
+
+	return 0;
+}
+
+// 08
+#include <iostream>
+
+using namespace std;
+
+class Currency {
+protected:
+	int value;
+	double course;
+public:
+	Currency(int v, double c) : value(v), course(c) {};
+
+	int getValue() const { return value; }
+	double getCourse() const { return course; }
+
+	virtual double convertCurrency() const = 0;
+};
+
+class EuroToLev :public Currency {
+public:
+	EuroToLev(int v, double c) : Currency(v, c) {};
+
+	double convertCurrency() const override {
+		return getValue() * getCourse();
+	}
+};
+
+class LevToEuro :public Currency {
+public:
+	LevToEuro(int v, double c) : Currency(v, c) {};
+
+	double convertCurrency() const override {
+		return getValue() * getCourse();
+	}
+};
+
+int main() {
+	EuroToLev etl(100, 1.96);
+	cout << etl.getValue() << "E = " << etl.convertCurrency() << "L\n";
+
+	LevToEuro lte(100, 0.51);
+	cout << lte.getValue() << "L = " << lte.convertCurrency() << "E\n";
+
+	return 0;
+}
+
+// 09
+#include <iostream>
+
+using namespace std;
+
+class CurrencyConverter {
+private:
+	int value;
+public:
+	CurrencyConverter(int v) : value(v) {};
+
+	int getValue() const { return value; }
+
+	double convert(double course) const {
+		return value * course;
+	}
+
+	void display() const {
+		double course;
+		cout << "Enter convert course: ";
+		cin >> course;
+		cout << "Before conversion: " << getValue() << endl;
+		cout << "After conversion: " << convert(course) << endl;
+	}
+};
+
+int main() {
+	CurrencyConverter c1(75);
+	c1.display();
+
+	return 0;
+}
